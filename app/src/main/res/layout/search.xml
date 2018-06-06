@@ -48,8 +48,8 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView3"
-        tools:layout_editor_absoluteX="32dp" />
+        app:layout_constraintStart_toStartOf="@+id/autoCompleteTextView3"
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView3" />
 
     <EditText
         android:id="@+id/editText2"
@@ -58,8 +58,8 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView6"
-        tools:layout_editor_absoluteX="208dp" />
+        app:layout_constraintStart_toStartOf="@+id/autoCompleteTextView6"
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView6" />
 
     <TextView
         android:id="@+id/textView5"

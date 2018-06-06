@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,30 +94,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
-
-        // int pou pairnei tis times apo to fakelo drawble
-
-//        final int[] ICONS = new int[]{
-//                R.drawable.search,
-//                R.drawable.history,
-//        };
-
-        //Get reference to your Tablayout
-        /// vazw eikones sta tabs
-
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//        tabLayout.getTabAt(0).setIcon(ICONS[0]);
-//        tabLayout.getTabAt(1).setIcon(ICONS[1]);
 
 
 
@@ -180,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
        // MyDBHistorySearch db;
 
-        public static FragmentFirst newInstance(int sectionNumber) {
-            FragmentFirst fragment = new FragmentFirst();
+        public static FragmentSecond newInstance(int sectionNumber) {
+            FragmentSecond fragment = new FragmentSecond();
             return fragment;
         }
 
@@ -191,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.history, container, false);
+            final View rootView = inflater.inflate(R.layout.history, container, false);
 
 
             return rootView;
