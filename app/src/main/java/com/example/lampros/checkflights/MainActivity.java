@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -33,11 +35,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import com.google.gson.JsonArray;
 import com.koushikdutta.async.future.FutureCallback;
@@ -233,9 +238,9 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog.show();
 
 
-                    SeekBar seekBarAdult = (SeekBar) layout.findViewById(R.id.seekBarAdultID);
-                    SeekBar seekBarChild = (SeekBar) layout.findViewById(R.id.seekBarChildID);
-                    SeekBar seekBarInfants = (SeekBar) layout.findViewById(R.id.seekBarInfantsID);
+                    final SeekBar seekBarAdult = (SeekBar) layout.findViewById(R.id.seekBarAdultID);
+                    final SeekBar seekBarChild = (SeekBar) layout.findViewById(R.id.seekBarChildID);
+                    final SeekBar seekBarInfants = (SeekBar) layout.findViewById(R.id.seekBarInfantsID);
 
                     Button doneBtn  =   (Button) layout.findViewById(R.id.DoneID);
 
@@ -243,6 +248,58 @@ public class MainActivity extends AppCompatActivity {
                     final TextView childNumber = (TextView) layout.findViewById(R.id.childNumberID);
                     final TextView infantNumber = (TextView) layout.findViewById(R.id.infantsNumbersID);
 
+                    TextView passengerTab = (TextView) layout.findViewById(R.id.passengersID);
+                    TextView cabinClassTab = (TextView) layout.findViewById(R.id.cabinClassID);
+
+                    final ImageView adultImg = (ImageView) layout.findViewById(R.id.adultImgID);
+                    final ImageView childImg = (ImageView) layout.findViewById(R.id.childImgID);
+                    final ImageView infantImg = (ImageView) layout.findViewById(R.id.infantImgID);
+
+                    final View linePassenger = (View) layout.findViewById(R.id.linePassengerID);
+                    final View lineCabinClass = (View) layout.findViewById(R.id.lineCabinClassID);
+
+                    final FrameLayout cabinClassFrame = (FrameLayout) layout.findViewById(R.id.cabinClassFrameID);
+
+
+
+
+                    passengerTab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            linePassenger.setVisibility(View.VISIBLE);
+                            lineCabinClass.setVisibility(View.INVISIBLE);
+                            seekBarAdult.setVisibility(View.VISIBLE);
+                            seekBarChild.setVisibility(View.VISIBLE);
+                            seekBarInfants.setVisibility(View.VISIBLE);
+                            adultImg.setVisibility(View.VISIBLE);
+                            childImg.setVisibility(View.VISIBLE);
+                            infantImg.setVisibility(View.VISIBLE);
+                            adultNumber.setVisibility(View.VISIBLE);
+                            childNumber.setVisibility(View.VISIBLE);
+                            infantNumber.setVisibility(View.VISIBLE);
+                            cabinClassFrame.setVisibility(View.INVISIBLE);
+
+
+                        }
+                    });
+
+                    cabinClassTab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            linePassenger.setVisibility(View.INVISIBLE);
+                            lineCabinClass.setVisibility(View.VISIBLE);
+                            seekBarAdult.setVisibility(View.INVISIBLE);
+                            seekBarChild.setVisibility(View.INVISIBLE);
+                            seekBarInfants.setVisibility(View.INVISIBLE);
+                            adultImg.setVisibility(View.INVISIBLE);
+                            childImg.setVisibility(View.INVISIBLE);
+                            infantImg.setVisibility(View.INVISIBLE);
+                            adultNumber.setVisibility(View.INVISIBLE);
+                            childNumber.setVisibility(View.INVISIBLE);
+                            infantNumber.setVisibility(View.INVISIBLE);
+                            cabinClassFrame.setVisibility(View.VISIBLE);
+                        }
+                    });
 
 
                     seekBarAdult.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
