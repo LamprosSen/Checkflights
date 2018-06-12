@@ -3,6 +3,9 @@ package com.example.lampros.checkflights;
 
 import android.app.ProgressDialog;
 
+import android.content.DialogInterface;
+import android.graphics.Paint;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 
@@ -154,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
         String fromText="";
         String toText="";
 
+        String cabinClassSTR="Economy Class";
+
 
         public static FragmentFirst newInstance(int sectionNumber) {
             FragmentFirst fragment = new FragmentFirst();
@@ -255,10 +260,73 @@ public class MainActivity extends AppCompatActivity {
                     final ImageView childImg = (ImageView) layout.findViewById(R.id.childImgID);
                     final ImageView infantImg = (ImageView) layout.findViewById(R.id.infantImgID);
 
+                    final ImageView checkedImgEcoClass = (ImageView) layout.findViewById(R.id.checkedEcID);
+                    final ImageView checkedImgPreEcoClass = (ImageView) layout.findViewById(R.id.checkedPecID);
+                    final ImageView checkedImgBuiClass = (ImageView) layout.findViewById(R.id.checkedBcID);
+                    final ImageView checkedImgFirstClass = (ImageView) layout.findViewById(R.id.checkedFcID);
+
+
+
                     final View linePassenger = (View) layout.findViewById(R.id.linePassengerID);
                     final View lineCabinClass = (View) layout.findViewById(R.id.lineCabinClassID);
 
                     final FrameLayout cabinClassFrame = (FrameLayout) layout.findViewById(R.id.cabinClassFrameID);
+
+                    final FrameLayout economyClassFrame = (FrameLayout) layout.findViewById(R.id.economyClassFrameID);
+                    final FrameLayout premiumEcoClassFrame = (FrameLayout) layout.findViewById(R.id.premiumEcoClassFrameID);
+                    final FrameLayout businessClassFrame = (FrameLayout) layout.findViewById(R.id.businessClassFrameID);
+                    final FrameLayout firstClassFrame = (FrameLayout) layout.findViewById(R.id.firstClassFrameID);
+
+
+
+
+                    economyClassFrame.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkedImgEcoClass.setVisibility(View.VISIBLE);
+                            checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                            checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                            cabinClassSTR = "Economy Class";
+
+
+                        }
+                    });
+                    premiumEcoClassFrame.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgPreEcoClass.setVisibility(View.VISIBLE);
+                            checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                            checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                            cabinClassSTR = "Premium Economy Class";
+
+
+                        }
+                    });
+                    businessClassFrame.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgBuiClass.setVisibility(View.VISIBLE);
+                            checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                            cabinClassSTR = "Business Class";
+
+
+                        }
+                    });
+                    firstClassFrame.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                            checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                            checkedImgFirstClass.setVisibility(View.VISIBLE);
+                            cabinClassSTR = "First-Class";
+
+                        }
+                    });
 
 
 
@@ -368,7 +436,60 @@ public class MainActivity extends AppCompatActivity {
                     doneBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            alertDialog.dismiss();
+
+                            //adult_economyClass.setText();
+                            String numberStr="";
+
+                            if(adultNumber.getText().toString().equals("0")&&childNumber.getText().toString().equals("0")&&infantNumber.getText().toString().equals("0")){
+
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("You must select at least 1 person!");
+                                builder1.setCancelable(true);
+
+                                builder1.setPositiveButton(
+                                        "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                            }
+                            else{
+
+                                if(!adultNumber.getText().toString().equals("0")){
+                                    if(numberStr.equals("")){
+                                        numberStr = adultNumber.getText().toString()+" adult";
+                                    }else
+                                        numberStr = numberStr+", " + adultNumber.getText().toString()+" adult";
+                                }
+                                if(!childNumber.getText().toString().equals("0")){
+                                    if(numberStr.equals("")){
+                                        numberStr = childNumber.getText().toString()+" child";
+                                    }else
+                                        numberStr = numberStr+", " + childNumber.getText().toString()+" child";
+                                }
+                                if(!infantNumber.getText().toString().equals("0")){
+                                    if(numberStr.equals("")){
+                                        numberStr = infantNumber.getText().toString()+" infant";
+                                    }else
+                                        numberStr = numberStr+", " + infantNumber.getText().toString()+" infant";
+                                }
+                                adult_economyClass.setText(numberStr+", "+cabinClassSTR );
+                                adult_economyClass.setPaintFlags(adult_economyClass.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+
+                                alertDialog.dismiss();
+
+                            }
+
+
+
+
+
+
+
                         }
                     });
 

@@ -3,5 +3,10 @@
     <string name="tab_text_1">Search</string>
     <string name="tab_text_2">History</string>
     <string name="action_settings">Settings</string>
+    <string name="Filter"><u>Filter</u></string>
+    <string name="Sort"><u>Sort</u></string>
+    <string name="adullt_EconomyClass"><u>1 adullt, Economy Class</u></string>
     <!--<string name="section_format">Hello World from section: %1$d</string>-->
+    <string name="hello">https://api.sandbox.amadeus.com/v1.2/airports/autocomplete?apikey=lnHOL4YI5vaCi5pxxcJrbfrHqqZ7glEY</string>
+
 </resources>
