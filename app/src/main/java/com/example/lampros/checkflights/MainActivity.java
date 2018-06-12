@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
         String toText="";
 
         String cabinClassSTR="Economy Class";
+        String adultNmbStr = "1";
+        String childNmbStr = "0";
+        String infantNbrStr = "0";
 
 
         public static FragmentFirst newInstance(int sectionNumber) {
@@ -182,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
             swapBtn = (ImageView) rootView.findViewById(R.id.swapID);
 
             adult_economyClass = (TextView) rootView.findViewById(R.id.Adult_EconomyClacssID);
-            sort = (TextView) rootView.findViewById(R.id.SortID);
-            filter = (TextView) rootView.findViewById(R.id.FilterID);
+
 
             from = (AutoCompleteTextView) rootView.findViewById(R.id.fromID);
             from.addTextChangedListener(this);
@@ -277,7 +279,35 @@ public class MainActivity extends AppCompatActivity {
                     final FrameLayout businessClassFrame = (FrameLayout) layout.findViewById(R.id.businessClassFrameID);
                     final FrameLayout firstClassFrame = (FrameLayout) layout.findViewById(R.id.firstClassFrameID);
 
+                    if(cabinClassSTR.equals("Economy Class")){
+                        checkedImgEcoClass.setVisibility(View.VISIBLE);
+                        checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                        checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                    }else if(cabinClassSTR.equals("Premium Economy Class")){
+                        checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgPreEcoClass.setVisibility(View.VISIBLE);
+                        checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                        checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                    }else if(cabinClassSTR.equals("Business Class")){
+                        checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgBuiClass.setVisibility(View.VISIBLE);
+                        checkedImgFirstClass.setVisibility(View.INVISIBLE);
+                    }else{
+                        checkedImgEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgPreEcoClass.setVisibility(View.INVISIBLE);
+                        checkedImgBuiClass.setVisibility(View.INVISIBLE);
+                        checkedImgFirstClass.setVisibility(View.VISIBLE);
+                    }
 
+                    seekBarAdult.setProgress(Integer.parseInt(adultNmbStr));
+                    seekBarChild.setProgress(Integer.parseInt(childNmbStr));
+                    seekBarInfants.setProgress(Integer.parseInt(childNmbStr));
+
+                    adultNumber.setText(adultNmbStr);
+                    childNumber.setText(childNmbStr);
+                    infantNumber.setText(infantNbrStr);
 
 
                     economyClassFrame.setOnClickListener(new View.OnClickListener() {
@@ -379,6 +409,7 @@ public class MainActivity extends AppCompatActivity {
 
                             progress = progresValue;
                             adultNumber.setText(String.valueOf(progress));
+                            adultNmbStr = Integer.toString(progress);
 
                         }
                         @Override
@@ -398,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
 
                             progressChild = progresValue;
                             childNumber.setText(String.valueOf(progressChild));
+                            childNmbStr = Integer.toString(progressChild);
 
                         }
                         @Override
@@ -417,6 +449,7 @@ public class MainActivity extends AppCompatActivity {
 
                             progressInfants = progresValue;
                             infantNumber.setText(String.valueOf(progressInfants));
+                            infantNbrStr = Integer.toString(progressInfants);
 
                         }
                         @Override
