@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
-    android:background="@drawable/air">
+    android:background="@drawable/wall3">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -35,7 +35,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="19dp"
-            app:tabIndicatorColor="@android:color/transparent">
+            app:tabTextColor="#345"
+            app:tabSelectedTextColor="#000000"
+            app:tabIndicatorColor="#d23">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"

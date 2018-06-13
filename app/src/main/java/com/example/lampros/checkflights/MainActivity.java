@@ -5,8 +5,7 @@ import android.app.ProgressDialog;
 
 import android.content.DialogInterface;
 import android.graphics.Paint;
-import android.os.Build;
-import android.support.annotation.NonNull;
+
 import android.support.design.widget.TabLayout;
 
 import android.support.v7.app.AlertDialog;
@@ -18,8 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutCompat;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,14 +36,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewAnimator;
+
 
 import com.google.gson.JsonArray;
 import com.koushikdutta.async.future.FutureCallback;
@@ -53,10 +51,15 @@ import com.koushikdutta.ion.Ion;
 import com.squareup.timessquare.CalendarPickerView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import static com.squareup.timessquare.CalendarPickerView.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -176,11 +179,11 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             final View rootView = inflater.inflate(R.layout.search, container, false);
 
-
-            Calendar nextYear = Calendar.getInstance();
-            nextYear.add(Calendar.YEAR, 1);
-
-            calendar = (CalendarPickerView) rootView.findViewById(R.id.calendar_view);
+//
+//            final Calendar nextYear = Calendar.getInstance();
+//            nextYear.add(Calendar.YEAR, 1);
+//
+//            calendar = (CalendarPickerView) rootView.findViewById(R.id.calendar_view);
 
             swapBtn = (ImageView) rootView.findViewById(R.id.swapID);
 
@@ -192,11 +195,50 @@ public class MainActivity extends AppCompatActivity {
             to = (AutoCompleteTextView) rootView.findViewById(R.id.toID) ;
             to.addTextChangedListener(this);
 
+//            final Date today = new Date();
+//            calendar.init(today, nextYear.getTime())
+//                    .withSelectedDate(today)
+//                    .inMode(CalendarPickerView.SelectionMode.RANGE);
+//            calendar.highlightDates(getHolidays());
+//            Log.i("Date", calendar.getSelectedDate().toString());
+
+            Calendar nextYear = Calendar.getInstance();
+            nextYear.add(Calendar.YEAR, 1);
+
+            calendar = (CalendarPickerView) rootView.findViewById(R.id.calendar_view);
             Date today = new Date();
             calendar.init(today, nextYear.getTime())
                     .withSelectedDate(today)
-                    .inMode(CalendarPickerView.SelectionMode.RANGE);
-            Log.i("Date", calendar.getSelectedDate().toString());
+                    .inMode(SelectionMode.RANGE);
+
+            calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
+                @Override
+                public void onDateSelected(Date date) {
+
+                    List<Date> dates = calendar.getSelectedDates();
+                    Log.i("FirstDate: ",calendar.getSelectedDates().get(0).toString());
+                    Log.i("LastDate: ",calendar.getSelectedDates().get(calendar.getSelectedDates().size()-1).toString());
+
+//                    List<Date> dates = calendar.getSelectedDates();
+//                    for (int i = 0; i< calendar.getSelectedDates().size();i++){
+//
+//                        //here you can fetch all dates
+//                        Toast.makeText(getContext(),calendar.getSelectedDates().get(i).toString(),Toast.LENGTH_SHORT).show();
+//
+//                    }
+
+
+                }
+
+                @Override
+                public void onDateUnselected(Date date) {
+
+                    //Toast.makeText(getContext(),"UnSelected Date is : " +date.toString(),Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+
 
 
             from.setOnTouchListener(new View.OnTouchListener() {
@@ -538,6 +580,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+//        @Override
+//        public boolean onCreateOptionsMenu(Menu menu) {
+//            getMenuInflater().inflate(R.menu.menu_main, menu);
+//            return true;
+//        }
+
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
@@ -553,6 +601,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+//
 
 
 
@@ -576,7 +626,8 @@ public class MainActivity extends AppCompatActivity {
                     pdFrom.setMessage("Please wait...");
                     pdFrom.show();
 
-                    String url = getResources().getString(R.string.hello)+"&term="+s.toString();
+                    String url = "https://api.sandbox.amadeus.com/v1.2/airports/autocomplete?apikey="+getResources().getString(R.string.hello)+"&term="+s.toString();
+                    Log.i("Apicall",url);
                     url = url.replaceAll(" ", "%20");
                     if(url.contains("[")) {
                         url = url.replaceAll(" \\[ ", "");
