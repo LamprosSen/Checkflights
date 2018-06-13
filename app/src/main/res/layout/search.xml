@@ -71,7 +71,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/searchBtnID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +129,7 @@
         app:layout_constraintStart_toStartOf="@+id/toID" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/searchBtnID"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginBottom="16dp"

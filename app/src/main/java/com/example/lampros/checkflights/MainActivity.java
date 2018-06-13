@@ -3,7 +3,9 @@ package com.example.lampros.checkflights;
 
 import android.app.ProgressDialog;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 
 import android.support.design.widget.TabLayout;
@@ -23,6 +25,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +35,8 @@ import android.view.ViewGroup;
 
 
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -155,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
         private ImageView swapBtn;
 
+        private Button searchBtn;
+
         int whereIs = 0;
 
         String fromText="";
@@ -164,6 +171,11 @@ public class MainActivity extends AppCompatActivity {
         String adultNmbStr = "1";
         String childNmbStr = "0";
         String infantNbrStr = "0";
+
+        String firstDate="";
+        String lastDate="";
+
+        boolean key = true;
 
 
         public static FragmentFirst newInstance(int sectionNumber) {
@@ -188,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
             swapBtn = (ImageView) rootView.findViewById(R.id.swapID);
 
             adult_economyClass = (TextView) rootView.findViewById(R.id.Adult_EconomyClacssID);
+
+            searchBtn = (Button) rootView.findViewById(R.id.searchBtnID);
 
 
             from = (AutoCompleteTextView) rootView.findViewById(R.id.fromID);
@@ -218,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
                     List<Date> dates = calendar.getSelectedDates();
                     Log.i("FirstDate: ",calendar.getSelectedDates().get(0).toString());
                     Log.i("LastDate: ",calendar.getSelectedDates().get(calendar.getSelectedDates().size()-1).toString());
+                    firstDate = calendar.getSelectedDates().get(0).toString();
+                    lastDate = calendar.getSelectedDates().get(calendar.getSelectedDates().size()-1).toString();
 
 //                    List<Date> dates = calendar.getSelectedDates();
 //                    for (int i = 0; i< calendar.getSelectedDates().size();i++){
@@ -249,12 +265,69 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            from.setOnKeyListener(new OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
+                    if(keyCode == KeyEvent.KEYCODE_DEL) {
+                        //this is for backspace
+                        key = false;
+                    }else
+                        key=true;
+                    return false;
+                }
+            });
+
+            from.setOnItemClickListener(new OnItemClickListener() {
+
+                                            @Override
+                                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                                                    long arg3) {
+                                                InputMethodManager inputManager =
+                                                        (InputMethodManager) getContext().
+                                                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                inputManager.hideSoftInputFromWindow(
+                                                        getActivity().getCurrentFocus().getWindowToken(),
+                                                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+
+                                            }
+                                        });
+
             to.setOnTouchListener(new View.OnTouchListener()
             {
                 public boolean onTouch(View arg0, MotionEvent arg1)
                 {
                     whereIs = 2;
                     return false;
+                }
+            });
+
+            to.setOnKeyListener(new OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
+                    if(keyCode == KeyEvent.KEYCODE_DEL) {
+                        //this is for backspace
+                        key = false;
+                    }else
+                        key=true;
+                    return false;
+                }
+            });
+
+            to.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                        long arg3) {
+                    InputMethodManager inputManager =
+                            (InputMethodManager) getContext().
+                                    getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(
+                            getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+
                 }
             });
 
@@ -571,12 +644,159 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            searchBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(from.length()==0){
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                        builder1.setMessage("Please insert city or airport!");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }else if(to.length()==0){
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                        builder1.setMessage("Please insert city or airport!");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    } else {
+
+                        searchForFlight(from.getText().toString(),to.getText().toString(),adultNmbStr,childNmbStr,infantNbrStr,convertDepartDate(firstDate),convertArrivalDate(lastDate));
+                        Log.i("tiStelnei",convertDepartDate(firstDate)+"+"+convertArrivalDate(lastDate));
+                    }
+
+                }
+            });
 
 
 
 
             return rootView;
         }
+
+        public String convertDepartDate(String departDate){
+
+           // Mon Jun 18 00:00:00 GMT+00:00 2018
+            String[] departDateList;
+            String day;
+            String month;
+            String year;
+            departDateList = departDate.split(" ");
+            day = departDateList[2];
+            month = departDateList[1];
+            year = departDateList[5];
+
+            if(month.contains("Jan"))
+                month = "01";
+            else if(month.contains("Feb"))
+                month= "02";
+            else if(month.contains("Mar"))
+                month= "03";
+            else if(month.contains("Apr"))
+                month= "04";
+            else if(month.contains("May"))
+                month= "05";
+            else if(month.contains("Jun"))
+                month= "06";
+            else if(month.contains("Jul"))
+                month= "07";
+            else if(month.contains("Aug"))
+                month= "08";
+            else if(month.contains("Sep"))
+                month= "09";
+            else if(month.contains("Oct"))
+                month= "10";
+            else if(month.contains("Nov"))
+                month= "11";
+            else if(month.contains("Dec"))
+                month= "12";
+
+
+
+
+            return year+"-"+month+"-"+day;
+        }
+
+        public String convertArrivalDate(String arrivalDate){
+
+            // Mon Jun 18 00:00:00 GMT+00:00 2018
+            String[] arrivalDateList;
+            String day;
+            String month;
+            String year;
+            arrivalDateList = arrivalDate.split(" ");
+            day = arrivalDateList[2];
+            month = arrivalDateList[1];
+            year = arrivalDateList[5];
+
+            if(month.contains("Jan"))
+                month = "01";
+            else if(month.contains("Feb"))
+                month= "02";
+            else if(month.contains("Mar"))
+                month= "03";
+            else if(month.contains("Apr"))
+                month= "04";
+            else if(month.contains("May"))
+                month= "05";
+            else if(month.contains("Jun"))
+                month= "06";
+            else if(month.contains("Jul"))
+                month= "07";
+            else if(month.contains("Aug"))
+                month= "08";
+            else if(month.contains("Sep"))
+                month= "09";
+            else if(month.contains("Oct"))
+                month= "10";
+            else if(month.contains("Nov"))
+                month= "11";
+            else if(month.contains("Dec"))
+                month= "12";
+
+            return year+"-"+month+"-"+day;
+
+        }
+
+
+        //stelnei ta dedomena
+        public void searchForFlight(String from, String to , String adults , String children,String infants  ,String departDate , String arivalDate){
+
+            Intent intent = new Intent(getContext(),Flights_Results.class );
+
+            intent.putExtra("from", from);
+            intent.putExtra("to", to);
+            intent.putExtra("adultsNmb", adults);
+            intent.putExtra("childrenNmb", children);
+            intent.putExtra("infantsNmb",infants);
+            intent.putExtra("departDate", departDate);
+            intent.putExtra("arivalDate", arivalDate);
+
+            startActivity(intent);
+
+
+        }
+
 
 
 
@@ -619,7 +839,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("TEXT CHANGED TO: " , s.toString());
             if(!TextUtils.isEmpty(s.toString())) {
                 Log.i("TEXT CHANGED TO: 2" , s.toString());
-                if(s.toString().length()>=3&& !s.toString().contains("[")){
+                if(s.toString().length()>=3&& !s.toString().contains("[")&&key){
                     //getNewText(s.toString());
 
                     pdFrom = new ProgressDialog(getContext());
